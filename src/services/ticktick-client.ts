@@ -10,6 +10,7 @@ import type {
   GetCompletedTasksParams,
   FilterTasksParams,
   MoveTaskParams,
+  CreateProjectParams,
 } from '../types.js';
 
 const API_BASE = 'https://api.ticktick.com/open/v1';
@@ -79,6 +80,12 @@ export class TickTickClient {
   }
 
   // ---------- Projects ----------
+
+  async createProject(params: CreateProjectParams): Promise<TickTickProject> {
+    const headers = await this.authHeaders();
+    const response = await this.http.post<TickTickProject>('/project', params, { headers });
+    return response.data;
+  }
 
   async getProjects(): Promise<TickTickProject[]> {
     const headers = await this.authHeaders();

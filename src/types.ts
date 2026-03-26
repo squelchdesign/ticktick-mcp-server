@@ -102,6 +102,13 @@ export interface MoveTaskParams {
   taskId: string;
 }
 
+export interface CreateProjectParams {
+  name: string;
+  color?: string;
+  viewMode?: 'list' | 'kanban' | 'timeline';
+  kind?: 'TASK' | 'NOTE';
+}
+
 export const PRIORITY_LABELS: Record<number, string> = {
   0: 'None',
   1: 'Low',

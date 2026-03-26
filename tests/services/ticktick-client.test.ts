@@ -50,6 +50,35 @@ beforeEach(() => {
 });
 
 // ---------------------------------------------------------------------------
+// createProject
+// ---------------------------------------------------------------------------
+describe('createProject', () => {
+  it('POSTs to /project and returns the created project', async () => {
+    const project = { id: 'proj-new', name: 'My Project', viewMode: 'list', kind: 'TASK' };
+    mockHttp.post.mockResolvedValue({ data: project });
+
+    const result = await makeClient().createProject({ name: 'My Project', viewMode: 'list', kind: 'TASK' });
+
+    expect(mockHttp.post).toHaveBeenCalledWith(
+      '/project',
+      { name: 'My Project', viewMode: 'list', kind: 'TASK' },
+      { headers: authHeader }
+    );
+    expect(result).toEqual(project);
+  });
+
+  it('sends only provided optional fields', async () => {
+    mockHttp.post.mockResolvedValue({ data: { id: 'p1', name: 'Minimal' } });
+
+    await makeClient().createProject({ name: 'Minimal' });
+
+    const body = mockHttp.post.mock.calls[0][1];
+    expect(body.color).toBeUndefined();
+    expect(body.viewMode).toBeUndefined();
+  });
+});
+
+// ---------------------------------------------------------------------------
 // getProjects
 // ---------------------------------------------------------------------------
 describe('getProjects', () => {
