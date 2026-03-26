@@ -12,6 +12,16 @@ import type {
 const API_BASE = 'https://api.ticktick.com/open/v1';
 const TOKEN_URL = 'https://ticktick.com/oauth/token';
 
+// TickTick API requires full datetime with UTC offset, e.g. "2026-03-26T00:00:00+0000".
+// A date-only string like "2026-03-26" is silently ignored by the API.
+function normalizeDueDate(date: string | undefined): string | undefined {
+  if (!date) return undefined;
+  // Already has a time component — leave it alone
+  if (date.includes('T')) return date;
+  // Date-only — append midnight UTC
+  return `${date}T00:00:00+0000`;
+}
+
 export class TickTickClient {
   private http: AxiosInstance;
   private tokens: TokenData;
@@ -106,13 +116,15 @@ export class TickTickClient {
 
   async createTask(params: CreateTaskParams): Promise<TickTickTask> {
     const headers = await this.authHeaders();
-    const response = await this.http.post<TickTickTask>('/task', params, { headers });
+    const body = { ...params, dueDate: normalizeDueDate(params.dueDate) };
+    const response = await this.http.post<TickTickTask>('/task', body, { headers });
     return response.data;
   }
 
   async updateTask(params: UpdateTaskParams): Promise<TickTickTask> {
     const headers = await this.authHeaders();
-    const { taskId, ...body } = params;
+    const { taskId, ...rest } = params;
+    const body = { ...rest, dueDate: normalizeDueDate(rest.dueDate) };
     const response = await this.http.post<TickTickTask>(`/task/${taskId}`, body, { headers });
     return response.data;
   }
