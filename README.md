@@ -56,14 +56,25 @@ Restart Claude Desktop. You should see the hammer (🔨) icon indicating tools a
 
 ## Available tools
 
+### Tasks
+
 | Tool | Description |
 |------|-------------|
 | `ticktick_get_today_tasks` | All tasks due today plus any overdue, sorted by priority |
-| `ticktick_get_projects` | List all projects with their IDs |
 | `ticktick_get_project_tasks` | All incomplete tasks in a given project |
 | `ticktick_create_task` | Create a task (title, project, due date, priority, notes) |
 | `ticktick_update_task` | Update an existing task's details |
 | `ticktick_complete_task` | Mark a task as complete |
+| `ticktick_get_completed_tasks` | Tasks completed within a date range (defaults to yesterday + today) |
+| `ticktick_filter_tasks` | Search tasks by project, date range, priority, tags, and status |
+| `ticktick_move_task` | Move a task from one project to another |
+
+### Projects
+
+| Tool | Description |
+|------|-------------|
+| `ticktick_get_projects` | List all projects with their IDs |
+| `ticktick_create_project` | Create a new project (name, colour, view mode, kind) |
 
 ## Example prompts
 
@@ -71,6 +82,10 @@ Restart Claude Desktop. You should see the hammer (🔨) icon indicating tools a
 - "Show me all my TickTick projects."
 - "Add a task to call the accountant, high priority, due tomorrow."
 - "Mark the 'Send invoice' task as done." *(you'll need to tell Claude the task ID, or ask it to find the task first)*
+- "What did I complete yesterday?"
+- "Show me all high-priority tasks this week."
+- "Move the 'Update website' task to my Work project."
+- "Create a new project called 'Q2 Planning'."
 
 ## Token refresh
 
