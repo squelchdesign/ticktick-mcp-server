@@ -8,6 +8,8 @@ import type {
   CreateTaskParams,
   UpdateTaskParams,
   GetCompletedTasksParams,
+  FilterTasksParams,
+  MoveTaskParams,
 } from '../types.js';
 
 const API_BASE = 'https://api.ticktick.com/open/v1';
@@ -148,6 +150,17 @@ export class TickTickClient {
     const headers = await this.authHeaders();
     const response = await this.http.post<TickTickTask[]>('/task/completed', params, { headers });
     return response.data;
+  }
+
+  async filterTasks(params: FilterTasksParams): Promise<TickTickTask[]> {
+    const headers = await this.authHeaders();
+    const response = await this.http.post<TickTickTask[]>('/task/filter', params, { headers });
+    return response.data;
+  }
+
+  async moveTask(params: MoveTaskParams): Promise<void> {
+    const headers = await this.authHeaders();
+    await this.http.post('/task/move', [params], { headers });
   }
 
   // ---------- Factory ----------

@@ -378,4 +378,122 @@ Example: Review what was done recently -> call with no arguments to see yesterda
       return { content: [{ type: 'text', text: sections.join('\n') }] };
     }
   );
+
+  // ------------------------------------------------------------------
+  // FILTER TASKS
+  // ------------------------------------------------------------------
+  server.registerTool(
+    'ticktick_filter_tasks',
+    {
+      title: 'Filter Tasks',
+      description: `Search for tasks using multiple filter criteria in a single call.
+
+Args:
+  - project_ids (array, optional): Limit to specific projects. Omit for all projects.
+  - start_date (string, optional): YYYY-MM-DD. Returns tasks whose startDate >= this date.
+  - end_date (string, optional): YYYY-MM-DD. Returns tasks whose startDate <= this date.
+  - priorities (array of numbers, optional): Filter by priority — 0=None, 1=Low, 3=Medium, 5=High.
+  - tags (array of strings, optional): Filter to tasks containing ALL specified tags.
+  - statuses (array of numbers, optional): 0=open, 2=completed. Defaults to open tasks only.
+
+Note: startDate/endDate filter against the task's START date, not its due date.
+For filtering by due date or completion date use ticktick_get_today_tasks or
+ticktick_get_completed_tasks instead.
+
+Returns:
+  Matching tasks sorted by priority then start date.`,
+      inputSchema: z.object({
+        project_ids: z.array(z.string()).optional().describe('Limit to these project IDs'),
+        start_date: z.string().optional().describe('Tasks with startDate >= YYYY-MM-DD'),
+        end_date: z.string().optional().describe('Tasks with startDate <= YYYY-MM-DD'),
+        priorities: z.array(z.number().int()).optional().describe('Priority filter: 0=None, 1=Low, 3=Medium, 5=High'),
+        tags: z.array(z.string()).optional().describe('Tasks must contain ALL of these tags'),
+        statuses: z.array(z.number().int()).optional().describe('Status filter: 0=open, 2=completed (default: [0])'),
+      }),
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true,
+      },
+    },
+    async ({ project_ids, start_date, end_date, priorities, tags, statuses }) => {
+      const client = getClient();
+      const projects = await client.getProjects();
+      const projectMap = buildProjectMap(projects);
+
+      const tasks = await client.filterTasks({
+        projectIds: project_ids,
+        startDate: start_date ? `${start_date}T00:00:00+0000` : undefined,
+        endDate: end_date ? `${end_date}T23:59:59+0000` : undefined,
+        priority: priorities,
+        tag: tags,
+        status: statuses ?? [0],
+      });
+
+      if (tasks.length === 0) {
+        return { content: [{ type: 'text', text: 'No tasks matched the filter criteria.' }] };
+      }
+
+      tasks.sort((a, b) => {
+        if (b.priority !== a.priority) return b.priority - a.priority;
+        const aDate = a.startDate ?? a.dueDate ?? '';
+        const bDate = b.startDate ?? b.dueDate ?? '';
+        return aDate.localeCompare(bDate);
+      });
+
+      const lines = [
+        `# Filter Results — ${tasks.length} task(s)\n`,
+        ...tasks.map(t => formatTask(t, projectMap.get(t.projectId))),
+      ];
+
+      return { content: [{ type: 'text', text: lines.join('\n') }] };
+    }
+  );
+
+  // ------------------------------------------------------------------
+  // MOVE TASK
+  // ------------------------------------------------------------------
+  server.registerTool(
+    'ticktick_move_task',
+    {
+      title: 'Move Task',
+      description: `Move a task from one project to another.
+
+Args:
+  - task_id (string): The task ID
+  - from_project_id (string): The project the task currently belongs to
+  - to_project_id (string): The destination project ID
+
+Returns:
+  Confirmation message.
+
+Use ticktick_get_projects to look up project IDs.`,
+      inputSchema: z.object({
+        task_id: z.string().describe('Task ID'),
+        from_project_id: z.string().describe('Source project ID'),
+        to_project_id: z.string().describe('Destination project ID'),
+      }),
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true,
+      },
+    },
+    async ({ task_id, from_project_id, to_project_id }) => {
+      const client = getClient();
+      await client.moveTask({
+        taskId: task_id,
+        fromProjectId: from_project_id,
+        toProjectId: to_project_id,
+      });
+      return {
+        content: [{
+          type: 'text',
+          text: `Task ${task_id} moved from project ${from_project_id} to ${to_project_id}.`,
+        }],
+      };
+    }
+  );
 }

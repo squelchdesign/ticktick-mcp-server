@@ -287,6 +287,62 @@ describe('getCompletedTasks', () => {
 });
 
 // ---------------------------------------------------------------------------
+// filterTasks
+// ---------------------------------------------------------------------------
+describe('filterTasks', () => {
+  it('POSTs to /task/filter with the provided params', async () => {
+    const tasks = [makeTask()];
+    mockHttp.post.mockResolvedValue({ data: tasks });
+
+    const params = {
+      projectIds: ['proj-1'],
+      startDate: '2026-03-01T00:00:00+0000',
+      endDate: '2026-03-31T23:59:59+0000',
+      priority: [3, 5],
+      tag: ['urgent'],
+      status: [0],
+    };
+
+    const result = await makeClient().filterTasks(params);
+
+    expect(mockHttp.post).toHaveBeenCalledWith('/task/filter', params, { headers: authHeader });
+    expect(result).toEqual(tasks);
+  });
+
+  it('sends only provided fields', async () => {
+    mockHttp.post.mockResolvedValue({ data: [] });
+
+    await makeClient().filterTasks({ status: [0] });
+
+    const body = mockHttp.post.mock.calls[0][1];
+    expect(body).toEqual({ status: [0] });
+    expect(body.projectIds).toBeUndefined();
+    expect(body.priority).toBeUndefined();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// moveTask
+// ---------------------------------------------------------------------------
+describe('moveTask', () => {
+  it('POSTs to /task/move with an array containing the move params', async () => {
+    mockHttp.post.mockResolvedValue({ data: [{ id: 'task-1', etag: 'abc' }] });
+
+    await makeClient().moveTask({
+      taskId: 'task-1',
+      fromProjectId: 'proj-a',
+      toProjectId: 'proj-b',
+    });
+
+    expect(mockHttp.post).toHaveBeenCalledWith(
+      '/task/move',
+      [{ taskId: 'task-1', fromProjectId: 'proj-a', toProjectId: 'proj-b' }],
+      { headers: authHeader }
+    );
+  });
+});
+
+// ---------------------------------------------------------------------------
 // Token refresh
 // ---------------------------------------------------------------------------
 describe('token refresh', () => {
