@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>OpenAPI - API Doc</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="Description">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="vue.css">
+    <link rel="stylesheet" href="custom.css">
+  <style>:root{--theme-color: #4772FA;}</style></head>
+  <body data-page="/openapi.md" class="ready sticky">
+    <main><button class="sidebar-toggle"><div class="sidebar-toggle-button"><span></span><span></span><span></span></div></button><aside class="sidebar"><div class="sidebar-nav"><ul><li><p>Getting Started</p><ul><li class="active"><a href="#/openapi">OpenAPI</a><ul class="app-sub-sidebar"><li><a class="section-link" href="#/openapi?id=introduction">Introduction</a></li><li><a class="section-link" href="#/openapi?id=getting-started">Getting Started</a></li><li><a class="section-link" href="#/openapi?id=authorization">Authorization</a></li><ul class="app-sub-sidebar"><li><a class="section-link" href="#/openapi?id=get-access-token">Get Access Token</a></li><ul class="app-sub-sidebar"><li><a class="section-link" href="#/openapi?id=first-step">First Step</a></li><li><a class="section-link" href="#/openapi?id=second-step">Second Step</a></li><li><a class="section-link" href="#/openapi?id=third-step">Third Step</a></li><li><a class="section-link" href="#/openapi?id=request-openapi">Request OpenAPI</a></li></ul></ul><li><a class="section-link" href="#/openapi?id=api-reference">API Reference</a></li><ul class="app-sub-sidebar"><li><a class="section-link" href="#/openapi?id=task">Task</a></li><ul class="app-sub-sidebar"><li><a class="section-link" href="#/openapi?id=get-task-by-project-id-and-task-id">Get Task By Project ID And Task ID</a></li><li><a class="section-link" href="#/openapi?id=create-task">Create Task</a></li><li><a class="section-link" href="#/openapi?id=update-task">Update Task</a></li><li><a class="section-link" href="#/openapi?id=complete-task">Complete Task</a></li><li><a class="section-link" href="#/openapi?id=delete-task">Delete Task</a></li><li><a class="section-link" href="#/openapi?id=move-task">Move Task</a></li><li><a class="section-link" href="#/openapi?id=list-completed-tasks">List Completed Tasks</a></li><li><a class="section-link" href="#/openapi?id=filter-tasks">Filter Tasks</a></li></ul><li><a class="section-link" href="#/openapi?id=project">Project</a></li><ul class="app-sub-sidebar"><li><a class="section-link" href="#/openapi?id=get-user-project">Get User Project</a></li><li><a class="section-link" href="#/openapi?id=get-project-by-id">Get Project By ID</a></li><li><a class="section-link" href="#/openapi?id=get-project-with-data">Get Project With Data</a></li><li><a class="section-link" href="#/openapi?id=create-project">Create Project</a></li><li><a class="section-link" href="#/openapi?id=update-project">Update Project</a></li><li><a class="section-link" href="#/openapi?id=delete-project">Delete Project</a></li></ul></ul><li><a class="section-link" href="#/openapi?id=definitions">Definitions</a></li><ul class="app-sub-sidebar"><li><a class="section-link" href="#/openapi?id=checklistitem">ChecklistItem</a></li><li><a class="section-link" href="#/openapi?id=task-1">Task</a></li><li><a class="section-link" href="#/openapi?id=project-1">Project</a></li><li><a class="section-link" href="#/openapi?id=column">Column</a></li><li><a class="section-link" href="#/openapi?id=projectdata">ProjectData</a></li></ul><li><a class="section-link" href="#/openapi?id=feedback-and-support">Feedback and Support</a></li></ul></li></ul></li></ul></div></aside><section class="content"><article class="markdown-section" id="main"><h1 id="ticktick-open-api"><a href="#/openapi?id=ticktick-open-api" data-id="ticktick-open-api" class="anchor"><span>TickTick Open API</span></a></h1><h2 id="introduction"><a href="#/openapi?id=introduction" data-id="introduction" class="anchor"><span>Introduction</span></a></h2><p>Welcome to the TickTick Open API documentation. TickTick is a powerful task management application that allows users to easily manage and organize their daily tasks, deadlines, and projects. With TickTick Open API, developers can integrate TickTick's powerful task management features into their own applications and create a seamless user experience.</p><h2 id="getting-started"><a href="#/openapi?id=getting-started" data-id="getting-started" class="anchor"><span>Getting Started</span></a></h2><p>To get started using the TickTick Open API, you will need to register your application and obtain a client ID and client secret. You can register your application by visiting the <a href="https://developer.ticktick.com/manage" target="_blank">TickTick Developer Center</a>. Once registered, you will receive a client ID and client secret which you will use to authenticate your requests.</p><h2 id="authorization"><a href="#/openapi?id=authorization" data-id="authorization" class="anchor"><span>Authorization</span></a></h2><h3 id="get-access-token"><a href="#/openapi?id=get-access-token" data-id="get-access-token" class="anchor"><span>Get Access Token</span></a></h3><p>In order to call TickTick's Open API, it is necessary to obtain an access token for the corresponding user. TickTick uses the OAuth2 protocol to obtain the access token.</p><h4 id="first-step"><a href="#/openapi?id=first-step" data-id="first-step" class="anchor"><span>First Step</span></a></h4><p>Redirect the user to the TickTick authorization page, <a href="https://ticktick.com/oauth/authorize" target="_blank">https://ticktick.com/oauth/authorize</a>. The required parameters are as follows:</p><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>client_id</td>
+<td>Application unique id</td>
+</tr>
+<tr>
+<td>scope</td>
+<td>Spaces-separated permission scope. The currently available scopes are tasks:write tasks:read</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Passed to redirect url as is</td>
+</tr>
+<tr>
+<td>redirect_uri</td>
+<td>User-configured redirect url</td>
+</tr>
+<tr>
+<td>response_type</td>
+<td>Fixed as code</td>
+</tr>
+</tbody></table>
+<p>Example:<br><a href="https://ticktick.com/oauth/authorize?scope=scope&amp;client_id=client_id&amp;state=state&amp;redirect_uri=redirect_uri&amp;response_type=code" target="_blank">https://ticktick.com/oauth/authorize?scope=scope&amp;client_id=client_id&amp;state=state&amp;redirect_uri=redirect_uri&amp;response_type=code</a></p><h4 id="second-step"><a href="#/openapi?id=second-step" data-id="second-step" class="anchor"><span>Second Step</span></a></h4><p>After the user grants access, TickTick will redirect the user back to your application's <code>redirect_uri</code> with an authorization code as a query parameter.</p><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>code</td>
+<td>Authorization code for subsequent access tokens</td>
+</tr>
+<tr>
+<td>state</td>
+<td>state parameter passed in the first step</td>
+</tr>
+</tbody></table>
+<h4 id="third-step"><a href="#/openapi?id=third-step" data-id="third-step" class="anchor"><span>Third Step</span></a></h4><p>To exchange the authorization code for an access token, make a POST request to <code>https://ticktick.com/oauth/token</code> with the following parameters(Content-Type: application/x-www-form-urlencoded):</p><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>client_id</td>
+<td>The username is located in the <strong>HEADER</strong> using the <strong>Basic Auth</strong> authentication method</td>
+</tr>
+<tr>
+<td>client_secret</td>
+<td>The password is located in the <strong>HEADER</strong> using the <strong>Basic Auth</strong> authentication method</td>
+</tr>
+<tr>
+<td>code</td>
+<td>The code obtained in the second step</td>
+</tr>
+<tr>
+<td>grant_type</td>
+<td>grant type, now only authorization_code</td>
+</tr>
+<tr>
+<td>scope</td>
+<td>spaces-separated permission scope. The currently available scopes are tasks: write, tasks: read</td>
+</tr>
+<tr>
+<td>redirect_uri</td>
+<td>user-configured redirect url</td>
+</tr>
+</tbody></table>
+<p>Access_token for openapi request authentication in the request response</p><pre v-pre="" data-lang=""><code class="lang-"> {  
+...  
+"access_token": "access token value"  
+...  
+}  </code></pre><h4 id="request-openapi"><a href="#/openapi?id=request-openapi" data-id="request-openapi" class="anchor"><span>Request OpenAPI</span></a></h4><p>Set <strong>Authorization</strong> in the header, the value is <strong>Bearer</strong> <code>access token value</code></p><pre v-pre="" data-lang=""><code class="lang-">Authorization: Bearer e*****b</code></pre><h2 id="api-reference"><a href="#/openapi?id=api-reference" data-id="api-reference" class="anchor"><span>API Reference</span></a></h2><p>The TickTick Open API provides a RESTful interface for accessing and managing user tasks, lists, and other related resources. The API is based on the standard HTTP protocol and supports JSON data formats.</p><h3 id="task"><a href="#/openapi?id=task" data-id="task" class="anchor"><span>Task</span></a></h3><h4 id="get-task-by-project-id-and-task-id"><a href="#/openapi?id=get-task-by-project-id-and-task-id" data-id="get-task-by-project-id-and-task-id" class="anchor"><span>Get Task By Project ID And Task ID</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">GET /open/v1/project/{projectId}/task/{taskId}  </code></pre><h5 id="parameters"><a href="#/openapi?id=parameters" data-id="parameters" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Path</strong></td>
+<td><strong>projectId</strong> <em>required</em></td>
+<td>Project identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Path</strong></td>
+<td><strong>taskId</strong> <em>required</em></td>
+<td>Task identifier</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h5 id="responses"><a href="#/openapi?id=responses" data-id="responses" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td><a href="#/openapi?id=task">Task</a></td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example"><a href="#/openapi?id=example" data-id="example" class="anchor"><span>Example</span></a></h5><h6 id="request"><a href="#/openapi?id=request" data-id="request" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">GET /open/v1/project/{{projectId}}/task/{{taskId}} HTTP/1.1
+Host: api.ticktick.com
+Authorization: Bearer {{token}}</code></pre><h6 id="response"><a href="#/openapi?id=response" data-id="response" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">{  
+"id" : "63b7bebb91c0a5474805fcd4",  
+"isAllDay" : true,  
+"projectId" : "6226ff9877acee87727f6bca",  
+"title" : "Task Title",  
+"content" : "Task Content",  
+"desc" : "Task Description",  
+"timeZone" : "America/Los_Angeles",  
+"repeatFlag" : "RRULE:FREQ=DAILY;INTERVAL=1",  
+"startDate" : "2019-11-13T03:00:00+0000",  
+"dueDate" : "2019-11-14T03:00:00+0000",  
+"reminders" : [ "TRIGGER:P0DT9H0M0S", "TRIGGER:PT0S" ],  
+"priority" : 1,  
+"status" : 0,  
+"completedTime" : "2019-11-13T03:00:00+0000",  
+"sortOrder" : 12345,  
+"items" : [ {  
+    "id" : "6435074647fd2e6387145f20",  
+    "status" : 0,  
+    "title" : "Item Title",  
+    "sortOrder" : 12345,  
+    "startDate" : "2019-11-13T03:00:00+0000",  
+    "isAllDay" : false,  
+    "timeZone" : "America/Los_Angeles",  
+    "completedTime" : "2019-11-13T03:00:00+0000"  
+    } ]  
+}  </code></pre><h4 id="create-task"><a href="#/openapi?id=create-task" data-id="create-task" class="anchor"><span>Create Task</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">POST /open/v1/task  </code></pre><h5 id="parameters-1"><a href="#/openapi?id=parameters-1" data-id="parameters-1" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Name</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Schema</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Body</strong></td>
+<td>title   <em>required</em></td>
+<td>Task title</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>projectId <em>required</em></td>
+<td>Project id</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>content</td>
+<td>Task content</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>desc</td>
+<td>Description of checklist</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>isAllDay</td>
+<td>All day</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>startDate</td>
+<td>Start date and time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code> format <br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>date</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>dueDate</td>
+<td>Due date and time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code> format <br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>date</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>timeZone</td>
+<td>The time zone in which the time is specified</td>
+<td>String</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>reminders</td>
+<td>Lists of reminders specific to the task</td>
+<td>list</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>repeatFlag</td>
+<td>Recurring rules of task</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>priority</td>
+<td>The priority of task, default is "0"</td>
+<td>integer</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>sortOrder</td>
+<td>The order of task</td>
+<td>integer</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items</td>
+<td>The list of subtasks</td>
+<td>list</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.title</td>
+<td>Subtask title</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.startDate</td>
+<td>Start date and time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code> format</td>
+<td>date</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.isAllDay</td>
+<td>All day</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.sortOrder</td>
+<td>The order of subtask</td>
+<td>integer</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.timeZone</td>
+<td>The time zone in which the Start time is specified</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.status</td>
+<td>The completion status of subtask</td>
+<td>integer</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.completedTime</td>
+<td>Completed time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code> format <br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>date</td>
+</tr>
+</tbody></table>
+<h5 id="responses-1"><a href="#/openapi?id=responses-1" data-id="responses-1" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td><a href="#/Task">Task</a></td>
+</tr>
+<tr>
+<td><strong>201</strong></td>
+<td>Created</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-1"><a href="#/openapi?id=example-1" data-id="example-1" class="anchor"><span>Example</span></a></h5><h6 id="request-1"><a href="#/openapi?id=request-1" data-id="request-1" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">POST /open/v1/task HTTP/1.1
+Host: api.ticktick.com
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+    ...
+    "title":"Task Title",
+    "projectId":"6226ff9877acee87727f6bca"
+    ...
+}</code></pre><h6 id="response-1"><a href="#/openapi?id=response-1" data-id="response-1" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">{  
+"id" : "63b7bebb91c0a5474805fcd4",  
+"projectId" : "6226ff9877acee87727f6bca",  
+"title" : "Task Title",  
+"content" : "Task Content",  
+"desc" : "Task Description",  
+"isAllDay" : true,  
+"startDate" : "2019-11-13T03:00:00+0000",  
+"dueDate" : "2019-11-14T03:00:00+0000",  
+"timeZone" : "America/Los_Angeles",  
+"reminders" : [ "TRIGGER:P0DT9H0M0S", "TRIGGER:PT0S" ],  
+"repeatFlag" : "RRULE:FREQ=DAILY;INTERVAL=1",  
+"priority" : 1,  
+"status" : 0,  
+"completedTime" : "2019-11-13T03:00:00+0000",  
+"sortOrder" : 12345,  
+"items" : [ {  
+    "id" : "6435074647fd2e6387145f20",  
+    "status" : 1,  
+    "title" : "Subtask Title",  
+    "sortOrder" : 12345,  
+    "startDate" : "2019-11-13T03:00:00+0000",  
+    "isAllDay" : false,  
+    "timeZone" : "America/Los_Angeles",  
+    "completedTime" : "2019-11-13T03:00:00+0000"  
+    } ]  
+}  </code></pre><p><a name="updateusingput"></a></p><h4 id="update-task"><a href="#/openapi?id=update-task" data-id="update-task" class="anchor"><span>Update Task</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">POST /open/v1/task/{taskId}  </code></pre><h5 id="parameters-2"><a href="#/openapi?id=parameters-2" data-id="parameters-2" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Name</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Schema</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Path</strong></td>
+<td><strong>taskId</strong> <em>required</em></td>
+<td>Task identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>id     <em>required</em></td>
+<td>Task id.</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>projectId     <em>required</em></td>
+<td>Project id.</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>title</td>
+<td>Task title</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>content</td>
+<td>Task content</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>desc</td>
+<td>Description of checklist</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>isAllDay</td>
+<td>All day</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>startDate</td>
+<td>Start date and time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code> format <br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>date</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>dueDate</td>
+<td>Due date and time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code> format <br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>date</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>timeZone</td>
+<td>The time zone in which the time is specified</td>
+<td>String</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>reminders</td>
+<td>Lists of reminders specific to the task</td>
+<td>list</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>repeatFlag</td>
+<td>Recurring rules of task</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>priority</td>
+<td>The priority of task, default is "normal"</td>
+<td>integer</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>sortOrder</td>
+<td>The order of task</td>
+<td>integer</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items</td>
+<td>The list of subtasks</td>
+<td>list</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.title</td>
+<td>Subtask title</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.startDate</td>
+<td>Start date and time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code> format</td>
+<td>date</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.isAllDay</td>
+<td>All day</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.sortOrder</td>
+<td>The order of subtask</td>
+<td>integer</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.timeZone</td>
+<td>The time zone in which the Start time is specified</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.status</td>
+<td>The completion status of subtask</td>
+<td>integer</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>items.completedTime</td>
+<td>Completed time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code> format <br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>date</td>
+</tr>
+</tbody></table>
+<h5 id="responses-2"><a href="#/openapi?id=responses-2" data-id="responses-2" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td><a href="#/Task">Task</a></td>
+</tr>
+<tr>
+<td><strong>201</strong></td>
+<td>Created</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-2"><a href="#/openapi?id=example-2" data-id="example-2" class="anchor"><span>Example</span></a></h5><h6 id="request-2"><a href="#/openapi?id=request-2" data-id="request-2" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">POST /open/v1/task/{{taskId}} HTTP/1.1
+Host: api.ticktick.com
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+    "id": "{{taskId}}",
+    "projectId": "{{projectId}}",
+    "title": "Task Title",
+    "priority": 1,
+    ...
+}</code></pre><h6 id="response-2"><a href="#/openapi?id=response-2" data-id="response-2" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">{  
+"id" : "63b7bebb91c0a5474805fcd4",  
+"projectId" : "6226ff9877acee87727f6bca",  
+"title" : "Task Title",  
+"content" : "Task Content",  
+"desc" : "Task Description",  
+"isAllDay" : true,  
+"startDate" : "2019-11-13T03:00:00+0000",  
+"dueDate" : "2019-11-14T03:00:00+0000",  
+"timeZone" : "America/Los_Angeles",  
+"reminders" : [ "TRIGGER:P0DT9H0M0S", "TRIGGER:PT0S" ],  
+"repeatFlag" : "RRULE:FREQ=DAILY;INTERVAL=1",  
+"priority" : 1,  
+"status" : 0,  
+"completedTime" : "2019-11-13T03:00:00+0000",  
+"sortOrder" : 12345,  
+"items" : [ {  
+    "id" : "6435074647fd2e6387145f20",  
+    "status" : 1,  
+    "title" : "Item Title",  
+    "sortOrder" : 12345,  
+    "startDate" : "2019-11-13T03:00:00+0000",  
+    "isAllDay" : false,  
+    "timeZone" : "America/Los_Angeles",  
+    "completedTime" : "2019-11-13T03:00:00+0000"  
+    } ], 
+"kind": "CHECKLIST"
+}  </code></pre><p><a name="completeusingpost"></a></p><h4 id="complete-task"><a href="#/openapi?id=complete-task" data-id="complete-task" class="anchor"><span>Complete Task</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">POST /open/v1/project/{projectId}/task/{taskId}/complete  </code></pre><h5 id="parameters-3"><a href="#/openapi?id=parameters-3" data-id="parameters-3" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Path</strong></td>
+<td><strong>projectId</strong> <em>required</em></td>
+<td>Project identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Path</strong></td>
+<td><strong>taskId</strong> <em>required</em></td>
+<td>Task identifier</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h5 id="responses-3"><a href="#/openapi?id=responses-3" data-id="responses-3" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>201</strong></td>
+<td>Created</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-3"><a href="#/openapi?id=example-3" data-id="example-3" class="anchor"><span>Example</span></a></h5><h6 id="request-3"><a href="#/openapi?id=request-3" data-id="request-3" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">POST /open/v1/project/{{projectId}}/task/{{taskId}}/complete HTTP/1.1
+Host: api.ticktick.com
+Authorization: Bearer {{token}}</code></pre><h4 id="delete-task"><a href="#/openapi?id=delete-task" data-id="delete-task" class="anchor"><span>Delete Task</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">DELETE /open/v1/project/{projectId}/task/{taskId}</code></pre><h5 id="parameters-4"><a href="#/openapi?id=parameters-4" data-id="parameters-4" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Path</strong></td>
+<td><strong>projectId</strong> <em>required</em></td>
+<td>Project identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Path</strong></td>
+<td><strong>taskId</strong> <em>required</em></td>
+<td>Task identifier</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h5 id="responses-4"><a href="#/openapi?id=responses-4" data-id="responses-4" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>201</strong></td>
+<td>Created</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-4"><a href="#/openapi?id=example-4" data-id="example-4" class="anchor"><span>Example</span></a></h5><h6 id="request-4"><a href="#/openapi?id=request-4" data-id="request-4" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">DELETE /open/v1/project/{{projectId}}/task/{{taskId}} HTTP/1.1
+Host: api.ticktick.com
+Authorization: Bearer {{token}}</code></pre><h4 id="move-task"><a href="#/openapi?id=move-task" data-id="move-task" class="anchor"><span>Move Task</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">POST /open/v1/task/move</code></pre><p>Moves one or more tasks between projects.</p><h5 id="request-body"><a href="#/openapi?id=request-body" data-id="request-body" class="anchor"><span>Request Body</span></a></h5><p>A JSON array containing task move operations.</p><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Body</strong></td>
+<td><strong>fromProjectId</strong> <em>required</em></td>
+<td>The ID of the source project</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td><strong>toProjectId</strong> <em>required</em></td>
+<td>The ID of the destination project</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td><strong>taskId</strong> <em>required</em></td>
+<td>The ID of the task to move</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h5 id="responses-5"><a href="#/openapi?id=responses-5" data-id="responses-5" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td>Returns an array of move results, including the task ID and its new etag)</td>
+</tr>
+<tr>
+<td><strong>201</strong></td>
+<td>Created</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-5"><a href="#/openapi?id=example-5" data-id="example-5" class="anchor"><span>Example</span></a></h5><h6 id="request-5"><a href="#/openapi?id=request-5" data-id="request-5" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">POST /open/v1/task/move HTTP/1.1
+Host: api.dida365.com
+Authorization: Bearer {{token}}
+[
+  {
+    "fromProjectId":"69a850ef1c20d2030e148fdd",
+    "toProjectId":"69a850f41c20d2030e148fdf",
+    "taskId":"69a850f8b9061f374d54a046"
+  }
+]</code></pre><h6 id="response-3"><a href="#/openapi?id=response-3" data-id="response-3" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">[
+  {
+    "id": "69a850f8b9061f374d54a046",
+    "etag": "43p2zso1"
+  }
+]</code></pre><h4 id="list-completed-tasks"><a href="#/openapi?id=list-completed-tasks" data-id="list-completed-tasks" class="anchor"><span>List Completed Tasks</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">POST /open/v1/task/completed</code></pre><p>Retrieves a list of tasks marked as completed within specific projects and a given time range.</p><h5 id="request-body-1"><a href="#/openapi?id=request-body-1" data-id="request-body-1" class="anchor"><span>Request Body</span></a></h5><p>A JSON object containing filter criteria. All fields are optional, but at least one filter is recommended to narrow down results.</p><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Body</strong></td>
+<td><strong>projectIds</strong></td>
+<td>List of project identifier</td>
+<td>list</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td><strong>startDate</strong></td>
+<td>The start of the time range (inclusive). Filters tasks where completedTime ≥ startDate</td>
+<td>date</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td><strong>endDate</strong></td>
+<td>The end of the time range (inclusive). Filters tasks where completedTime ≤ endDate</td>
+<td>date</td>
+</tr>
+</tbody></table>
+<h5 id="responses-6"><a href="#/openapi?id=responses-6" data-id="responses-6" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td>&lt; <a href="#/Task">Task</a> &gt; array</td>
+</tr>
+<tr>
+<td><strong>201</strong></td>
+<td>Created</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-6"><a href="#/openapi?id=example-6" data-id="example-6" class="anchor"><span>Example</span></a></h5><h6 id="request-6"><a href="#/openapi?id=request-6" data-id="request-6" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">POST /open/v1/task/completed HTTP/1.1
+Host: api.dida365.com
+Authorization: Bearer {{token}}
+{
+  "projectIds": [
+    "69a850f41c20d2030e148fdf"
+  ],
+  "startDate":"2026-03-01T00:58:20.000+0000",
+  "endDate":"2026-03-05T10:58:20.000+0000"
+}</code></pre><h6 id="response-4"><a href="#/openapi?id=response-4" data-id="response-4" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">[
+  {
+    "id": "69a850f8b9061f374d54a046",
+    "projectId": "69a850f41c20d2030e148fdf",
+    "sortOrder": -1099511627776,
+    "title": "update",
+    "content": "",
+    "timeZone": "America/Los_Angeles",
+    "isAllDay": false,
+    "priority": 0,
+    "completedTime": "2026-03-04T23:58:20.000+0000",
+    "status": 2,
+    "etag": "t3kc5m5f",
+    "kind": "TEXT"
+  }
+]</code></pre><h4 id="filter-tasks"><a href="#/openapi?id=filter-tasks" data-id="filter-tasks" class="anchor"><span>Filter Tasks</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">POST /open/v1/task/filter</code></pre><p>Retrieves a list of tasks based on advanced filtering criteria, including project scope, date ranges, priority levels, tags, and status.</p><h5 id="parameters-5"><a href="#/openapi?id=parameters-5" data-id="parameters-5" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Body</strong></td>
+<td><strong>projectIds</strong></td>
+<td>Filters tasks belonging to the specified project ID</td>
+<td>list</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td><strong>startDate</strong></td>
+<td>Filters tasks where the task's startDate ≥ startDate</td>
+<td>date</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td><strong>endDate</strong></td>
+<td>Filters tasks where the task's startDate ≤ endDate</td>
+<td>date</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td><strong>proiority</strong></td>
+<td>Filters tasks by specific priority levels, Valid Values: None(0), Low(1), Mediunm(3), High(5)</td>
+<td>list</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td><strong>tag</strong></td>
+<td>Filters tasks that contain all of the specified tags</td>
+<td>list</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td><strong>status</strong></td>
+<td>Filters tasks by their current status codes (e.g., [0] for Open, [2] for Completed)</td>
+<td>list</td>
+</tr>
+</tbody></table>
+<h5 id="responses-7"><a href="#/openapi?id=responses-7" data-id="responses-7" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td>&lt; <a href="#/Task">Task</a> &gt; array</td>
+</tr>
+<tr>
+<td><strong>201</strong></td>
+<td>Created</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-7"><a href="#/openapi?id=example-7" data-id="example-7" class="anchor"><span>Example</span></a></h5><h6 id="request-7"><a href="#/openapi?id=request-7" data-id="request-7" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">POST /open/v1/task/filter HTTP/1.1
+Host: api.dida365.com
+Authorization: Bearer {{token}}
+{
+  "projectIds": [
+    "69a850f41c20d2030e148fdf"
+  ],
+  "startDate":"2026-03-01T00:58:20.000+0000",
+  "endDate":"2026-03-06T10:58:20.000+0000",
+  "priority": [0],
+  "tag": ["urgent"],
+  "status": [0]
+}</code></pre><h6 id="response-5"><a href="#/openapi?id=response-5" data-id="response-5" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">[
+  {
+    "id": "69a85785b9061f3c217e9de6",
+    "projectId": "69a850f41c20d2030e148fdf",
+    "sortOrder": -2199023255552,
+    "title": "task1",
+    "content": "",
+    "desc": "",
+    "startDate": "2026-03-05T00:00:00.000+0000",
+    "dueDate": "2026-03-05T00:00:00.000+0000",
+    "timeZone": "America/Los_Angeles",
+    "isAllDay": false,
+    "priority": 0,
+    "status": 0,
+    "tags": [
+      "tag"
+    ],
+    "etag": "cic6e3cg",
+    "kind": "TEXT"
+  },
+  {
+    "id": "69a8ea79b9061f4d803f6b32",
+    "projectId": "69a850f41c20d2030e148fdf",
+    "sortOrder": -3298534883328,
+    "title": "task2",
+    "content": "",
+    "startDate": "2026-03-05T00:00:00.000+0000",
+    "dueDate": "2026-03-05T00:00:00.000+0000",
+    "timeZone": "America/Los_Angeles",
+    "isAllDay": false,
+    "priority": 0,
+    "status": 0,
+    "tags": [
+      "tag"
+    ],
+    "etag": "0nvpcxzh",
+    "kind": "TEXT"
+  }
+]</code></pre><h3 id="project"><a href="#/openapi?id=project" data-id="project" class="anchor"><span>Project</span></a></h3><h4 id="get-user-project"><a href="#/openapi?id=get-user-project" data-id="get-user-project" class="anchor"><span>Get User Project</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">GET /open/v1/project</code></pre><h5 id="responses-8"><a href="#/openapi?id=responses-8" data-id="responses-8" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td>&lt; <a href="#/Project">Project</a> &gt; array</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-8"><a href="#/openapi?id=example-8" data-id="example-8" class="anchor"><span>Example</span></a></h5><h6 id="request-8"><a href="#/openapi?id=request-8" data-id="request-8" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">GET /open/v1/project HTTP/1.1
+Host: api.ticktick.com
+Authorization: Bearer {{token}}</code></pre><h6 id="response-6"><a href="#/openapi?id=response-6" data-id="response-6" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">[{
+"id": "6226ff9877acee87727f6bca",
+"name": "project name",
+"color": "#F18181",
+"closed": false,
+"groupId": "6436176a47fd2e05f26ef56e",
+"viewMode": "list",
+"permission": "write",
+"kind": "TASK"
+}]</code></pre><h4 id="get-project-by-id"><a href="#/openapi?id=get-project-by-id" data-id="get-project-by-id" class="anchor"><span>Get Project By ID</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">GET /open/v1/project/{projectId}</code></pre><h5 id="parameters-6"><a href="#/openapi?id=parameters-6" data-id="parameters-6" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Path</strong></td>
+<td><strong>project</strong> <em>required</em></td>
+<td>Project identifier</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h5 id="responses-9"><a href="#/openapi?id=responses-9" data-id="responses-9" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td><a href="#/Project">Project</a></td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-9"><a href="#/openapi?id=example-9" data-id="example-9" class="anchor"><span>Example</span></a></h5><h6 id="request-path"><a href="#/openapi?id=request-path" data-id="request-path" class="anchor"><span>Request path</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">GET /open/v1/project/{{projectId}} HTTP/1.1
+Host: api.ticktick.com
+Authorization: Bearer {{token}}</code></pre><h6 id="response-7"><a href="#/openapi?id=response-7" data-id="response-7" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">{
+    "id": "6226ff9877acee87727f6bca",
+    "name": "project name",
+    "color": "#F18181",
+    "closed": false,
+    "groupId": "6436176a47fd2e05f26ef56e",
+    "viewMode": "list",
+    "kind": "TASK"
+}</code></pre><h4 id="get-project-with-data"><a href="#/openapi?id=get-project-with-data" data-id="get-project-with-data" class="anchor"><span>Get Project With Data</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">GET /open/v1/project/{projectId}/data</code></pre><h5 id="parameters-7"><a href="#/openapi?id=parameters-7" data-id="parameters-7" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Path</strong></td>
+<td><strong>projectId</strong> <em>required</em></td>
+<td>Project identifier</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h5 id="responses-10"><a href="#/openapi?id=responses-10" data-id="responses-10" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td><a href="#/ProjectData">ProjectData</a></td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-10"><a href="#/openapi?id=example-10" data-id="example-10" class="anchor"><span>Example</span></a></h5><h6 id="request-9"><a href="#/openapi?id=request-9" data-id="request-9" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">GET /open/v1/project/{{projectId}}/data HTTP/1.1
+Host: api.ticktick.com
+Authorization: Bearer {{token}}</code></pre><h6 id="response-8"><a href="#/openapi?id=response-8" data-id="response-8" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">{
+"project": {
+    "id": "6226ff9877acee87727f6bca",
+    "name": "project name",
+    "color": "#F18181",
+    "closed": false,
+    "groupId": "6436176a47fd2e05f26ef56e",
+    "viewMode": "list",
+    "kind": "TASK"
+},
+"tasks": [{
+    "id": "6247ee29630c800f064fd145",
+    "isAllDay": true,
+    "projectId": "6226ff9877acee87727f6bca",
+    "title": "Task Title",
+    "content": "Task Content",
+    "desc": "Task Description",
+    "timeZone": "America/Los_Angeles",
+    "repeatFlag": "RRULE:FREQ=DAILY;INTERVAL=1",
+    "startDate": "2019-11-13T03:00:00+0000",
+    "dueDate": "2019-11-14T03:00:00+0000",
+    "reminders": [
+        "TRIGGER:P0DT9H0M0S",
+        "TRIGGER:PT0S"
+    ],
+    "priority": 1,
+    "status": 0,
+    "completedTime": "2019-11-13T03:00:00+0000",
+    "sortOrder": 12345,
+    "items": [{
+        "id": "6435074647fd2e6387145f20",
+        "status": 0,
+        "title": "Subtask Title",
+        "sortOrder": 12345,
+        "startDate": "2019-11-13T03:00:00+0000",
+        "isAllDay": false,
+        "timeZone": "America/Los_Angeles",
+        "completedTime": "2019-11-13T03:00:00+0000"
+    }]
+}],
+"columns": [{
+    "id": "6226ff9e76e5fc39f2862d1b",
+    "projectId": "6226ff9877acee87727f6bca",
+    "name": "Column Name",
+    "sortOrder": 0
+}]
+}</code></pre><h4 id="create-project"><a href="#/openapi?id=create-project" data-id="create-project" class="anchor"><span>Create Project</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">POST /open/v1/project</code></pre><h5 id="parameters-8"><a href="#/openapi?id=parameters-8" data-id="parameters-8" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Name</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Schema</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Body</strong></td>
+<td>name  <em>required</em></td>
+<td>name of the project</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>color</td>
+<td>color of project, eg. "#F18181"</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>sortOrder</td>
+<td>sort order value of the project</td>
+<td>integer (int64)</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>viewMode</td>
+<td>view mode, "list", "kanban", "timeline"</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>kind</td>
+<td>project kind, "TASK", "NOTE"</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h5 id="responses-11"><a href="#/openapi?id=responses-11" data-id="responses-11" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td><a href="#/Project">Project</a></td>
+</tr>
+<tr>
+<td><strong>201</strong></td>
+<td>Created</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-11"><a href="#/openapi?id=example-11" data-id="example-11" class="anchor"><span>Example</span></a></h5><h6 id="request-10"><a href="#/openapi?id=request-10" data-id="request-10" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">POST /open/v1/project HTTP/1.1
+Host: api.ticktick.com
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+    "name": "project name",
+    "color": "#F18181",
+    "viewMode": "list",
+    "kind": "task"
+}</code></pre><h6 id="response-9"><a href="#/openapi?id=response-9" data-id="response-9" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">{
+"id": "6226ff9877acee87727f6bca",
+"name": "project name",
+"color": "#F18181",
+"sortOrder": 0,
+"viewMode": "list",
+"kind": "TASK"
+}</code></pre><h4 id="update-project"><a href="#/openapi?id=update-project" data-id="update-project" class="anchor"><span>Update Project</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">POST /open/v1/project/{projectId}</code></pre><h5 id="parameters-9"><a href="#/openapi?id=parameters-9" data-id="parameters-9" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Parameter</strong></th>
+<th><strong>Description</strong></th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Path</strong></td>
+<td>projectId <em>required</em></td>
+<td>project identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>name</td>
+<td>name of the project</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>color</td>
+<td>color of the project</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>sortOrder</td>
+<td>sort order value, default 0</td>
+<td>integer (int64)</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>viewMode</td>
+<td>view mode, "list", "kanban", "timeline"</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>Body</strong></td>
+<td>kind</td>
+<td>project kind, "TASK", "NOTE"</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h5 id="responses-12"><a href="#/openapi?id=responses-12" data-id="responses-12" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td><a href="#/Project">Project</a></td>
+</tr>
+<tr>
+<td><strong>201</strong></td>
+<td>Created</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-12"><a href="#/openapi?id=example-12" data-id="example-12" class="anchor"><span>Example</span></a></h5><h6 id="request-11"><a href="#/openapi?id=request-11" data-id="request-11" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">POST /open/v1/project/{{projectId}} HTTP/1.1
+Host: api.ticktick.com
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Project Name",
+    "color": "#F18181",
+    "viewMode": "list",
+    "kind": "TASK"
+}</code></pre><h6 id="response-10"><a href="#/openapi?id=response-10" data-id="response-10" class="anchor"><span>Response</span></a></h6><pre v-pre="" data-lang="json"><code class="lang-json">{
+"id": "6226ff9877acee87727f6bca",
+"name": "Project Name",
+"color": "#F18181",
+"sortOrder": 0,
+"viewMode": "list",
+"kind": "TASK"
+}</code></pre><h4 id="delete-project"><a href="#/openapi?id=delete-project" data-id="delete-project" class="anchor"><span>Delete Project</span></a></h4><pre v-pre="" data-lang=""><code class="lang-">DELETE /open/v1/project/{projectId}</code></pre><h5 id="parameters-10"><a href="#/openapi?id=parameters-10" data-id="parameters-10" class="anchor"><span>Parameters</span></a></h5><table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Path</td>
+<td><strong>projectId</strong> <em>required</em></td>
+<td>Project identifier</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h5 id="responses-13"><a href="#/openapi?id=responses-13" data-id="responses-13" class="anchor"><span>Responses</span></a></h5><table>
+<thead>
+<tr>
+<th>HTTP Code</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>200</strong></td>
+<td>OK</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>401</strong></td>
+<td>Unauthorized</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>403</strong></td>
+<td>Forbidden</td>
+<td>No Content</td>
+</tr>
+<tr>
+<td><strong>404</strong></td>
+<td>Not Found</td>
+<td>No Content</td>
+</tr>
+</tbody></table>
+<h5 id="example-13"><a href="#/openapi?id=example-13" data-id="example-13" class="anchor"><span>Example</span></a></h5><h6 id="request-12"><a href="#/openapi?id=request-12" data-id="request-12" class="anchor"><span>Request</span></a></h6><pre v-pre="" data-lang="http"><code class="lang-http">DELETE /open/v1/project/{{projectId}} HTTP/1.1
+Host: api.ticktick.com
+Authorization: Bearer {{token}}</code></pre><h2 id="definitions"><a href="#/openapi?id=definitions" data-id="definitions" class="anchor"><span>Definitions</span></a></h2><h3 id="checklistitem"><a href="#/openapi?id=checklistitem" data-id="checklistitem" class="anchor"><span>ChecklistItem</span></a></h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>id</strong></td>
+<td>Subtask identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>title</strong></td>
+<td>Subtask title</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>The completion status of subtask <br> <strong>Value</strong> : Normal: <code>0</code>, Completed: <code>1</code></td>
+<td>integer (int32)</td>
+</tr>
+<tr>
+<td><strong>completedTime</strong></td>
+<td>Subtask completed time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code> <br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>string (date-time)</td>
+</tr>
+<tr>
+<td><strong>isAllDay</strong></td>
+<td>All day</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td><strong>sortOrder</strong></td>
+<td>Subtask sort order <br> <strong>Example</strong> : <code>234444</code></td>
+<td>integer (int64)</td>
+</tr>
+<tr>
+<td><strong>startDate</strong></td>
+<td>Subtask start date time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code> <br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>string (date-time)</td>
+</tr>
+<tr>
+<td><strong>timeZone</strong></td>
+<td>Subtask timezone <br> <strong>Example</strong> : <code>"America/Los_Angeles"</code></td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h3 id="task-1"><a href="#/openapi?id=task-1" data-id="task-1" class="anchor"><span>Task</span></a></h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>id</strong></td>
+<td>Task identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>projectId</strong></td>
+<td>Task project id</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>title</strong></td>
+<td>Task title</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>isAllDay</strong></td>
+<td>All day</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td><strong>completedTime</strong></td>
+<td>Task completed time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code><br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>string (date-time)</td>
+</tr>
+<tr>
+<td><strong>content</strong></td>
+<td>Task content</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>desc</strong></td>
+<td>Task description of checklist</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>dueDate</strong></td>
+<td>Task due date time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code><br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>string (date-time)</td>
+</tr>
+<tr>
+<td><strong>items</strong></td>
+<td>Subtasks of Task</td>
+<td>&lt; <a href="#/openapi?id=checklistitem">ChecklistItem</a> &gt; array</td>
+</tr>
+<tr>
+<td><strong>priority</strong></td>
+<td>Task priority <br> <strong>Value</strong> : None:<code>0</code>, Low:<code>1</code>, Medium:<code>3</code>, High<code>5</code></td>
+<td>integer (int32)</td>
+</tr>
+<tr>
+<td><strong>reminders</strong></td>
+<td>List of reminder triggers<br> <strong>Example</strong> : <code>[ "TRIGGER:P0DT9H0M0S", "TRIGGER:PT0S" ]</code></td>
+<td>&lt; string &gt; array</td>
+</tr>
+<tr>
+<td><strong>repeatFlag</strong></td>
+<td>Recurring rules of task <br> <strong>Example</strong> : <code>"RRULE:FREQ=DAILY;INTERVAL=1"</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>sortOrder</strong></td>
+<td>Task sort order <br> <strong>Example</strong> : <code>12345</code></td>
+<td>integer (int64)</td>
+</tr>
+<tr>
+<td><strong>startDate</strong></td>
+<td>Start date time in <code>"yyyy-MM-dd'T'HH:mm:ssZ"</code><br> <strong>Example</strong> : <code>"2019-11-13T03:00:00+0000"</code></td>
+<td>string (date-time)</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>Task completion status <br> <strong>Value</strong> : Normal: <code>0</code>, Completed: <code>2</code></td>
+<td>integer (int32)</td>
+</tr>
+<tr>
+<td><strong>timeZone</strong></td>
+<td>Task timezone <br> <strong>Example</strong> : <code>"America/Los_Angeles"</code></td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>kind</strong></td>
+<td>"TEXT", "NOTE", "CHECKLIST"</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h3 id="project-1"><a href="#/openapi?id=project-1" data-id="project-1" class="anchor"><span>Project</span></a></h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>id</strong></td>
+<td>Project identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>Project name</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>color</strong></td>
+<td>Project color</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>sortOrder</strong></td>
+<td>Order value</td>
+<td>integer (int64)</td>
+</tr>
+<tr>
+<td><strong>closed</strong></td>
+<td>Projcet closed</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td><strong>groupId</strong></td>
+<td>Project group identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>viewMode</strong></td>
+<td>view mode, "list", "kanban", "timeline"</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>permission</strong></td>
+<td>"read", "write" or "comment"</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>kind</strong></td>
+<td>"TASK" or "NOTE"</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h3 id="column"><a href="#/openapi?id=column" data-id="column" class="anchor"><span>Column</span></a></h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>Column identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td>projectId</td>
+<td>Project identifier</td>
+<td>string</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Column name</td>
+<td>string</td>
+</tr>
+<tr>
+<td>sortOrder</td>
+<td>Order value</td>
+<td>integer (int64)</td>
+</tr>
+</tbody></table>
+<h3 id="projectdata"><a href="#/openapi?id=projectdata" data-id="projectdata" class="anchor"><span>ProjectData</span></a></h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Schema</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>project</td>
+<td>Project info</td>
+<td><a href="#/Project">Project</a></td>
+</tr>
+<tr>
+<td>tasks</td>
+<td>Undone tasks under project</td>
+<td>&lt;<a href="#/Task">Task</a>&gt; array</td>
+</tr>
+<tr>
+<td>columns</td>
+<td>Columns under project</td>
+<td>&lt;<a href="#/Column">Column</a>&gt; array</td>
+</tr>
+</tbody></table>
+<h2 id="feedback-and-support"><a href="#/openapi?id=feedback-and-support" data-id="feedback-and-support" class="anchor"><span>Feedback and Support</span></a></h2><p>If you have any questions or feedback regarding the TickTick Open API documentation, please contact us at <a href="mailto:support@ticktick.com">support@ticktick.com</a>. We appreciate your input and will work to address any concerns or issues as quickly as possible. Thank you for choosing TickTick!</p></article></section></main>
+    <script src="config.js"></script>
+    <script src="docsify.min.js"></script>
+    <!-- <script>
+      window.addEventListener("hashchange", function(event) {
+        console.log(event.newURL);
+        window.url = event.newURL;
+      });
+    </script> -->
+  
+
+<div class="progress" style="opacity: 0; width: 0%;"></div></body></html>

@@ -81,6 +81,34 @@ export interface UpdateTaskParams {
   timeZone?: string;
 }
 
+export interface GetCompletedTasksParams {
+  projectIds?: string[];
+  startDate?: string; // ISO 8601 datetime with UTC offset
+  endDate?: string;   // ISO 8601 datetime with UTC offset
+}
+
+export interface FilterTasksParams {
+  projectIds?: string[];
+  startDate?: string;  // Filters where task startDate >= this value
+  endDate?: string;    // Filters where task startDate <= this value
+  priority?: number[]; // 0=None, 1=Low, 3=Medium, 5=High
+  tag?: string[];
+  status?: number[];   // 0=open, 2=completed
+}
+
+export interface MoveTaskParams {
+  fromProjectId: string;
+  toProjectId: string;
+  taskId: string;
+}
+
+export interface CreateProjectParams {
+  name: string;
+  color?: string;
+  viewMode?: 'list' | 'kanban' | 'timeline';
+  kind?: 'TASK' | 'NOTE';
+}
+
 export const PRIORITY_LABELS: Record<number, string> = {
   0: 'None',
   1: 'Low',

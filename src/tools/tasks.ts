@@ -3,9 +3,11 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { TickTickClient } from '../services/ticktick-client.js';
 import {
   formatTask,
+  formatCompletedTask,
   isToday,
   isOverdue,
   todayDateString,
+  yesterdayDateString,
   buildProjectMap,
 } from '../services/formatters.js';
 
@@ -287,6 +289,209 @@ Returns:
         content: [{
           type: 'text',
           text: `Task updated.\nID: ${updated.id}\nTitle: ${updated.title}`,
+        }],
+      };
+    }
+  );
+
+  // ------------------------------------------------------------------
+  // GET COMPLETED TASKS
+  // ------------------------------------------------------------------
+  server.registerTool(
+    'ticktick_get_completed_tasks',
+    {
+      title: 'Get Completed Tasks',
+      description: `Retrieve tasks completed within a date range, across all projects or specific ones.
+
+Args:
+  - start_date (string, optional): Start of range in YYYY-MM-DD format. Defaults to yesterday.
+  - end_date (string, optional): End of range in YYYY-MM-DD format. Defaults to today.
+  - project_ids (array of strings, optional): Limit results to specific projects. Omit for all projects.
+
+Returns:
+  Completed tasks grouped by completion date, sorted by completedTime descending.
+  Each task shows title, project, completion time, due date (if set), priority, and IDs.
+
+Example: Review what was done recently -> call with no arguments to see yesterday and today.`,
+      inputSchema: z.object({
+        start_date: z.string().optional().describe('Start date YYYY-MM-DD (default: yesterday)'),
+        end_date: z.string().optional().describe('End date YYYY-MM-DD (default: today)'),
+        project_ids: z.array(z.string()).optional().describe('Limit to these project IDs'),
+      }),
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true,
+      },
+    },
+    async ({ start_date, end_date, project_ids }) => {
+      const client = getClient();
+      const projects = await client.getProjects();
+      const projectMap = buildProjectMap(projects);
+
+      const startStr = start_date ?? yesterdayDateString();
+      const endStr = end_date ?? todayDateString();
+
+      const tasks = await client.getCompletedTasks({
+        projectIds: project_ids,
+        startDate: `${startStr}T00:00:00+0000`,
+        endDate: `${endStr}T23:59:59+0000`,
+      });
+
+      if (tasks.length === 0) {
+        return {
+          content: [{
+            type: 'text',
+            text: `No completed tasks found between ${startStr} and ${endStr}.`,
+          }],
+        };
+      }
+
+      // Sort by completedTime descending (most recent first)
+      tasks.sort((a, b) => {
+        const aTime = a.completedTime ?? '';
+        const bTime = b.completedTime ?? '';
+        return bTime.localeCompare(aTime);
+      });
+
+      // Group by completion date
+      const byDate = new Map<string, typeof tasks>();
+      for (const task of tasks) {
+        const dateKey = task.completedTime ? task.completedTime.split('T')[0] : 'Unknown';
+        if (!byDate.has(dateKey)) byDate.set(dateKey, []);
+        byDate.get(dateKey)!.push(task);
+      }
+
+      const sections: string[] = [
+        `# Completed Tasks: ${startStr} to ${endStr} (${tasks.length} total)\n`,
+      ];
+
+      for (const [date, dateTasks] of byDate) {
+        const label = date === todayDateString() ? `${date} (Today)` :
+                      date === yesterdayDateString() ? `${date} (Yesterday)` : date;
+        sections.push(`## ${label} — ${dateTasks.length} task(s)\n`);
+        dateTasks.forEach(t => sections.push(formatCompletedTask(t, projectMap.get(t.projectId))));
+        sections.push('');
+      }
+
+      return { content: [{ type: 'text', text: sections.join('\n') }] };
+    }
+  );
+
+  // ------------------------------------------------------------------
+  // FILTER TASKS
+  // ------------------------------------------------------------------
+  server.registerTool(
+    'ticktick_filter_tasks',
+    {
+      title: 'Filter Tasks',
+      description: `Search for tasks using multiple filter criteria in a single call.
+
+Args:
+  - project_ids (array, optional): Limit to specific projects. Omit for all projects.
+  - start_date (string, optional): YYYY-MM-DD. Returns tasks whose startDate >= this date.
+  - end_date (string, optional): YYYY-MM-DD. Returns tasks whose startDate <= this date.
+  - priorities (array of numbers, optional): Filter by priority — 0=None, 1=Low, 3=Medium, 5=High.
+  - tags (array of strings, optional): Filter to tasks containing ALL specified tags.
+  - statuses (array of numbers, optional): 0=open, 2=completed. Defaults to open tasks only.
+
+Note: startDate/endDate filter against the task's START date, not its due date.
+For filtering by due date or completion date use ticktick_get_today_tasks or
+ticktick_get_completed_tasks instead.
+
+Returns:
+  Matching tasks sorted by priority then start date.`,
+      inputSchema: z.object({
+        project_ids: z.array(z.string()).optional().describe('Limit to these project IDs'),
+        start_date: z.string().optional().describe('Tasks with startDate >= YYYY-MM-DD'),
+        end_date: z.string().optional().describe('Tasks with startDate <= YYYY-MM-DD'),
+        priorities: z.array(z.number().int()).optional().describe('Priority filter: 0=None, 1=Low, 3=Medium, 5=High'),
+        tags: z.array(z.string()).optional().describe('Tasks must contain ALL of these tags'),
+        statuses: z.array(z.number().int()).optional().describe('Status filter: 0=open, 2=completed (default: [0])'),
+      }),
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true,
+      },
+    },
+    async ({ project_ids, start_date, end_date, priorities, tags, statuses }) => {
+      const client = getClient();
+      const projects = await client.getProjects();
+      const projectMap = buildProjectMap(projects);
+
+      const tasks = await client.filterTasks({
+        projectIds: project_ids,
+        startDate: start_date ? `${start_date}T00:00:00+0000` : undefined,
+        endDate: end_date ? `${end_date}T23:59:59+0000` : undefined,
+        priority: priorities,
+        tag: tags,
+        status: statuses ?? [0],
+      });
+
+      if (tasks.length === 0) {
+        return { content: [{ type: 'text', text: 'No tasks matched the filter criteria.' }] };
+      }
+
+      tasks.sort((a, b) => {
+        if (b.priority !== a.priority) return b.priority - a.priority;
+        const aDate = a.startDate ?? a.dueDate ?? '';
+        const bDate = b.startDate ?? b.dueDate ?? '';
+        return aDate.localeCompare(bDate);
+      });
+
+      const lines = [
+        `# Filter Results — ${tasks.length} task(s)\n`,
+        ...tasks.map(t => formatTask(t, projectMap.get(t.projectId))),
+      ];
+
+      return { content: [{ type: 'text', text: lines.join('\n') }] };
+    }
+  );
+
+  // ------------------------------------------------------------------
+  // MOVE TASK
+  // ------------------------------------------------------------------
+  server.registerTool(
+    'ticktick_move_task',
+    {
+      title: 'Move Task',
+      description: `Move a task from one project to another.
+
+Args:
+  - task_id (string): The task ID
+  - from_project_id (string): The project the task currently belongs to
+  - to_project_id (string): The destination project ID
+
+Returns:
+  Confirmation message.
+
+Use ticktick_get_projects to look up project IDs.`,
+      inputSchema: z.object({
+        task_id: z.string().describe('Task ID'),
+        from_project_id: z.string().describe('Source project ID'),
+        to_project_id: z.string().describe('Destination project ID'),
+      }),
+      annotations: {
+        readOnlyHint: false,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true,
+      },
+    },
+    async ({ task_id, from_project_id, to_project_id }) => {
+      const client = getClient();
+      await client.moveTask({
+        taskId: task_id,
+        fromProjectId: from_project_id,
+        toProjectId: to_project_id,
+      });
+      return {
+        content: [{
+          type: 'text',
+          text: `Task ${task_id} moved from project ${from_project_id} to ${to_project_id}.`,
         }],
       };
     }
