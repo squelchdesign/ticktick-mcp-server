@@ -65,3 +65,5 @@ The server is configured via Claude Desktop's `claude_desktop_config.json` (macO
 ```
 
 OAuth apps must be registered at [developer.ticktick.com](https://developer.ticktick.com) with redirect URI `http://localhost:8080/callback`. Run `npm run auth` once to complete the OAuth flow and store tokens before starting the server.
+
+A snapshot of the TickTick Open API docs is saved at `docs/ticktick-open-api-2026-03-26.html` — use this when you need to check endpoint specs, as the live docs require JavaScript to render and are not directly fetchable.
