@@ -5,13 +5,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run build      # Compile TypeScript to dist/
-npm run dev        # Watch mode compilation
-npm start          # Run the MCP server
-npm run auth       # Run the one-time OAuth setup CLI
+npm run build        # Compile TypeScript to dist/
+npm run dev          # Watch mode compilation
+npm start            # Run the MCP server
+npm run auth         # Run the one-time OAuth setup CLI
+npm test             # Run tests (single pass)
+npm run test:watch   # Run tests in watch mode
+npm run test:coverage # Run tests with coverage report
 ```
 
-There are no tests configured in this project.
+## Tests
+
+Tests use [Vitest](https://vitest.dev/) and live in `tests/services/`. Run with `npm test`.
+
+The three service files are covered (`formatters.ts`, `ticktick-client.ts`, `token-store.ts`). The MCP tool files (`src/tools/`) are **not** unit tested — they are thin orchestration over the already-tested service layer, and would require a complex `McpServer` mock to unit test usefully. If tool-layer coverage becomes important, the right approach is integration testing via an in-memory MCP transport.
 
 ## Architecture
 
