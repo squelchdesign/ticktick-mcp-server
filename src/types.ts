@@ -81,6 +81,12 @@ export interface UpdateTaskParams {
   timeZone?: string;
 }
 
+export interface GetCompletedTasksParams {
+  projectIds?: string[];
+  startDate?: string; // ISO 8601 datetime with UTC offset
+  endDate?: string;   // ISO 8601 datetime with UTC offset
+}
+
 export const PRIORITY_LABELS: Record<number, string> = {
   0: 'None',
   1: 'Low',

@@ -3,9 +3,11 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { TickTickClient } from '../services/ticktick-client.js';
 import {
   formatTask,
+  formatCompletedTask,
   isToday,
   isOverdue,
   todayDateString,
+  yesterdayDateString,
   buildProjectMap,
 } from '../services/formatters.js';
 
@@ -289,6 +291,91 @@ Returns:
           text: `Task updated.\nID: ${updated.id}\nTitle: ${updated.title}`,
         }],
       };
+    }
+  );
+
+  // ------------------------------------------------------------------
+  // GET COMPLETED TASKS
+  // ------------------------------------------------------------------
+  server.registerTool(
+    'ticktick_get_completed_tasks',
+    {
+      title: 'Get Completed Tasks',
+      description: `Retrieve tasks completed within a date range, across all projects or specific ones.
+
+Args:
+  - start_date (string, optional): Start of range in YYYY-MM-DD format. Defaults to yesterday.
+  - end_date (string, optional): End of range in YYYY-MM-DD format. Defaults to today.
+  - project_ids (array of strings, optional): Limit results to specific projects. Omit for all projects.
+
+Returns:
+  Completed tasks grouped by completion date, sorted by completedTime descending.
+  Each task shows title, project, completion time, due date (if set), priority, and IDs.
+
+Example: Review what was done recently -> call with no arguments to see yesterday and today.`,
+      inputSchema: z.object({
+        start_date: z.string().optional().describe('Start date YYYY-MM-DD (default: yesterday)'),
+        end_date: z.string().optional().describe('End date YYYY-MM-DD (default: today)'),
+        project_ids: z.array(z.string()).optional().describe('Limit to these project IDs'),
+      }),
+      annotations: {
+        readOnlyHint: true,
+        destructiveHint: false,
+        idempotentHint: true,
+        openWorldHint: true,
+      },
+    },
+    async ({ start_date, end_date, project_ids }) => {
+      const client = getClient();
+      const projects = await client.getProjects();
+      const projectMap = buildProjectMap(projects);
+
+      const startStr = start_date ?? yesterdayDateString();
+      const endStr = end_date ?? todayDateString();
+
+      const tasks = await client.getCompletedTasks({
+        projectIds: project_ids,
+        startDate: `${startStr}T00:00:00+0000`,
+        endDate: `${endStr}T23:59:59+0000`,
+      });
+
+      if (tasks.length === 0) {
+        return {
+          content: [{
+            type: 'text',
+            text: `No completed tasks found between ${startStr} and ${endStr}.`,
+          }],
+        };
+      }
+
+      // Sort by completedTime descending (most recent first)
+      tasks.sort((a, b) => {
+        const aTime = a.completedTime ?? '';
+        const bTime = b.completedTime ?? '';
+        return bTime.localeCompare(aTime);
+      });
+
+      // Group by completion date
+      const byDate = new Map<string, typeof tasks>();
+      for (const task of tasks) {
+        const dateKey = task.completedTime ? task.completedTime.split('T')[0] : 'Unknown';
+        if (!byDate.has(dateKey)) byDate.set(dateKey, []);
+        byDate.get(dateKey)!.push(task);
+      }
+
+      const sections: string[] = [
+        `# Completed Tasks: ${startStr} to ${endStr} (${tasks.length} total)\n`,
+      ];
+
+      for (const [date, dateTasks] of byDate) {
+        const label = date === todayDateString() ? `${date} (Today)` :
+                      date === yesterdayDateString() ? `${date} (Yesterday)` : date;
+        sections.push(`## ${label} — ${dateTasks.length} task(s)\n`);
+        dateTasks.forEach(t => sections.push(formatCompletedTask(t, projectMap.get(t.projectId))));
+        sections.push('');
+      }
+
+      return { content: [{ type: 'text', text: sections.join('\n') }] };
     }
   );
 }

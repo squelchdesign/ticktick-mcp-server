@@ -7,6 +7,7 @@ import type {
   TickTickProjectData,
   CreateTaskParams,
   UpdateTaskParams,
+  GetCompletedTasksParams,
 } from '../types.js';
 
 const API_BASE = 'https://api.ticktick.com/open/v1';
@@ -141,6 +142,12 @@ export class TickTickClient {
   async deleteTask(projectId: string, taskId: string): Promise<void> {
     const headers = await this.authHeaders();
     await this.http.delete(`/project/${projectId}/task/${taskId}`, { headers });
+  }
+
+  async getCompletedTasks(params: GetCompletedTasksParams): Promise<TickTickTask[]> {
+    const headers = await this.authHeaders();
+    const response = await this.http.post<TickTickTask[]>('/task/completed', params, { headers });
+    return response.data;
   }
 
   // ---------- Factory ----------
